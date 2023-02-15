@@ -1,0 +1,127 @@
+Q = When working in dbt, which one of the following should always be unique for each dbt developer when working in development?
+A = Target schema
+
+Q = Which one of the following is a true statement about dbt connections?
+A = Data is stored in the data platform and code is stored in the git repository
+
+Q = Which of the following is true about version control with git in dbt?
+A = Separate branches allow dbt developers to simultaneously work on the same code base without impacting production
+
+Q = What is required to materialize a model in your data platform with dbt?
+A = A & B only (A dbt project with .sql files saved in a models directory   AND  A connection to a data warehouse with raw data loaded in)
+
+
+Q = In the dbt context, what is a model?
+A = A select statement written in SQL
+
+Q = What file type is used for building a model?
+A = .sql
+
+Q = What is the default materialization of a model if you don't proactively configure the materialization for a model?
+A = View
+
+Q = A given model called `events` is configured to be materialized as a view in dbt_project.yml and configured as a table in a config block at the top of the model. When you execute dbt run, what will happen in dbt?
+A = dbt will build the `events` model as a table
+
+Q = How do you build dependencies between models?
+A = Use the 'ref' function in the from clause of a model 
+
+Q = Which command below will attempt to only materialize dim_customers and its downstream models?
+A = dbt run --select dim_customers+
+
+Q = Which one of the following is true about staging models as defined in this course?
+A = Staging models are used to perform light touch transformations to shape the data to how you wish it looked
+
+Q = Which of the following is a benefit of using subdirectories in your models directory?
+A = Subdirectories allow you to configure materializations at the folder level for a collection of models
+
+Q = By default, where in your dbt project will dbt look for source configurations?
+A = A .yml file in the models folder
+
+Q = Which of the following is NOT a benefit of using the sources feature?
+A = You can modify and append to raw tables in your data warehouse
+
+Q = Consider the YAML file below. Which of the following lines of code will select all columns from the products table?
+A = `select * from {{ source(‘salesforce’, ‘products’) }}`
+
+Q = Consider the DAG of a dbt project listed above.  What was most likely missed by the data team working on this project?
+A = They did not use the source function to build a dependency between staging models and sources
+
+Q = Consider the YAML above. What does the freshness block accomplish?
+A = dbt will warn if the max(_etl_loaded_at)  > 12 hours old, and error if max(_etl_loaded_at) > 24 hours old in the orders table when checking source freshness.
+
+Q = What is the correct command to test your source freshness, assuming the freshness config block is correct?
+A = dbt source freshness
+
+Q = What file type is used for specifying which generic tests to run by model and column?
+A = .yml
+
+Q = What are the four generic tests that dbt ships with?
+A = Not_null, unique, relationships, accepted_values
+
+Q = In what folder should singular tests be saved in your dbt project?
+A = tests
+
+
+Q = What command would you use to only run tests configured on a source named my_raw_data?
+A = dbt test --select source:my_raw_data
+
+
+Q = Based on the YAML file below, which one of the following statements is true?
+A = The accepted values test will fail if one of the values in the payment_method column is not equal to credit_card, paypal, or ach_transfer
+
+
+Q = How do you associate a singular test with a particular dbt model or source?
+A = Using the ref or source macro in the SQL query in the singular test file
+
+Q = What query would you use to create a singular test to assert that no record in cool_model has a value in Column A that is less than the value in Column B?
+A = select * from {{ ref( ‘cool_model’) }} where Column A < Column B
+
+
+Q = What is most likely true if a generic test on your sources fails?
+A = An assumption about your raw data is no longer true
+
+Q = What command will generate documentation for your project in development?
+A = dbt docs generate
+
+Q = Which one of the following statements is true about documentation in dbt?
+A = dbt will automatically pull descriptions from your dbt project and metadata about your models and sources into the documentation site
+
+
+Q = What is the correct way to reference the doc block called ‘orders’, contained in a file called docs_jaffle_shop.md?
+A = description: ‘{{ doc(“orders”) }}’
+
+
+Q = What aspects of the generated DAG can help you understand your data flow?
+A = B & C only (
+B. Dependencies between models can help identify how code is used and possible redundancies
+C. The selector can help narrow the scope of the shown DAG, which allows you to see how your specific model is used upstream and/or downstream
+)
+
+
+Q = Which one of the following are true about running your dbt project in production?
+A = Running dbt in production should use a different database schema than I used in development
+
+Q = When does a dbt job run?
+A = At whatever cadence you set up for the job
+
+Q = The following commands are configured for a production job in dbt Cloud.
+		dbt seed
+		dbt test --select source:*
+		dbt run
+		dbt test --exclude source:*
+		If any of the tests on sources fails, how will dbt Cloud handle the rest of the commands?  
+		Choose only ONE best answer.
+A = dbt will not execute any further commands
+
+Q = Consider a production job where you have the following commands and have enabled docs generation.
+dbt run
+dbt test
+What will be the correct order of invoked dbt commands in the run history after ‘clone git repository’ and ‘create profile from connection’?
+A = dbt deps >> dbt run >> dbt test >> dbt docs generate
+
+Q = Which one of the following is true about development and deployment environments?
+A = Deployment environments are used for running code on a schedule and development environments are used for developing code.
+
+Q = After developing models in dbt, which one of the following steps is the final step to ensure your code runs in production?
+A = The code has been reviewed and merged into the default branch
